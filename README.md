@@ -18,7 +18,9 @@ PuLPは、ソルバーを使用して線形問題を解くライブラリ
 
 ## Contens
 
-- [インストール方法](install.md)
+- [インストール方法](/install.md)
+- 例題
+  - [マッチング問題](example/matching_problem.md)
 
 ## 参考文献
 
