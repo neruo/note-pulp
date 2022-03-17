@@ -43,54 +43,10 @@ $$
 
 ### pythonコード
 
-```python
-import pulp
+次のコードを実行すると、（作業員、作業）の割当て結果は、 (A, c), (B, a), (C, b), (D, e), (E, d) となり、総費用は$12$となる。
 
-#      a  b  c  d  e
-ps = [[9, 5, 1, 9, 7],  # A
-      [2, 8, 2, 7, 5],  # B
-      [1, 3, 9, 5, 9],  # C
-      [8, 7, 2, 6, 4],  # D
-      [2, 3, 6, 2, 8]]  # E
+- [matching_problem.ipynb](./matching_problem.ipynb)
 
-def solver(ws):
-    prob = pulp.LpProblem('assignment')
-    # 変数
-    xs = []
-    for i in range(len(ws)):
-        xs1 = [pulp.LpVariable('x_{}_{}'.format(i, j), cat='Binary') for j in range(len(ws))]
-        xs.append(xs1)
-
-    # 目的関数
-    prob += pulp.lpSum([pulp.lpDot(ws[i], xs[i]) for i in range(len(ws))])
-
-    # 制約
-    for i in range(len(ws)):
-        prob += pulp.lpSum(xs[i]) == 1                               # 作業員iに、1つの仕事
-        prob += pulp.lpSum([xs[j][i] for j in range(len(ws))]) == 1  # 作業jには、1人の作業員
-    
-    # 探索開始
-    status = prob.solve(pulp.PULP_CBC_CMD(msg=0))
-    print("Status", pulp.LpStatus[status])
-    for xs1 in xs:
-        print([x.value() for x in xs1])
-    print(prob.objective.value())
-
-# 実行
-solver(ps)
-```
-
-次のように解が得られる。割当て結果は（作業員、作業）とすると、 (A, c), (B, a), (C, b), (D, e), (E, d) となり、総費用は$12$となる。
-
-```shell
-Status Optimal
-[0.0, 0.0, 1.0, 0.0, 0.0]
-[1.0, 0.0, 0.0, 0.0, 0.0]
-[0.0, 1.0, 0.0, 0.0, 0.0]
-[0.0, 0.0, 0.0, 0.0, 1.0]
-[0.0, 0.0, 0.0, 1.0, 0.0]
-12.0
-```
 
 ## 参考文献
 
